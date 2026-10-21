@@ -1,0 +1,14 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: self-hosted
+    env:
+      NOMAD_ADDR: http://127.0.0.1:4646
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -f docker/Dockerfile.staging -t hubspot-company:staging .
+      - run: nomad job run deploy/nomad/hubspot-db.nomad.hcl
+      - run: nomad job run deploy/nomad/hubspot.nomad.hcl
