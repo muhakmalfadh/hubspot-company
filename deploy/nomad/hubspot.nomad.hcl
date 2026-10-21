@@ -1,3 +1,7 @@
+variable "image_tag" {
+  default = "staging"
+}
+
 job "hubspot" {
   datacenters = ["dc1"]
   type        = "service"
@@ -25,7 +29,7 @@ job "hubspot" {
     task "app" {
       driver = "docker"
       config {
-        image        = "hubspot-company:staging"
+        image        = "hubspot-company:${var.image_tag}"
         network_mode = "host"
       }
       env {
